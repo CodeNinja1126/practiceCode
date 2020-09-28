@@ -1,4 +1,10 @@
-﻿#include <iostream>
+/*
+NHN 코딩 테스트 예제 문제
+재귀 호출법을 사용해서 푼 답안
+qsort의 사용법은 이후 요긴하게 쓰일 거 같으니 숙지해두도록 하자
+*/
+
+#include <iostream>
 
 using namespace std;
 
