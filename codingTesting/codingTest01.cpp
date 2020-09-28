@@ -1,4 +1,11 @@
-﻿#include <iostream>
+/*
+NHN 코딩 테스트 예제 문제
+재귀호출 대신 스택을 사용해서 푼 답안
+재귀호출 사용시 스택 영역이 오버플로우될 수 있으므로
+배열의 크기가 커졌을 시에도 문제없이 가능한 답안
+*/
+
+#include <iostream>
 #include <stack>
 
 using namespace std;
