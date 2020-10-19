@@ -1,0 +1,91 @@
+/*
+프로그래머스 문제
+N_queen
+
+https://programmers.co.kr/learn/courses/30/lessons/12952
+*/
+#include <string>
+#include <vector>
+#include <algorithm>
+
+#define map_to_board(i,n) i % n + 1 +( i / n + 1 ) * ( n + 2 )
+
+using namespace std;
+
+int board_size;
+int num;
+
+bool check(vector<int> queen, vector<int> board, int length) {
+    int x_direct[8] = { 1,1,0,-1,-1,-1,0,1 };
+    int y_direct[8] = { 0,1,1,1,0,-1,-1,-1 };
+    int n = board_size - 2;
+
+    for (int i = 0; i < length; i++) {
+        int a = queen[i] + i * n;
+        queen[i] = map_to_board(a, n);
+        board[queen[i]] = 1;
+    }
+
+    for (int i = 0; i < length; i++) {
+        for (int j = 0; j < 8; j++) {
+            int pos = queen[i];
+            while (1) {
+                pos += x_direct[j] + board_size * y_direct[j];
+
+                if (board[pos] == -1) {
+                    break;
+                }
+                else if (board[pos] == 1) {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    return 1;
+}
+
+void permutation(vector<int>& array, vector<int> board, int depth) {
+    int size = array.size();
+
+    if (depth == size) {
+        if (check(array, board, depth)) {
+            num++;
+        }
+    }
+    else{
+        for (int i = depth - 1; i < size; i++) {
+            swap(array[depth - 1], array[i]);
+            if (check(array, board, depth)) {
+                permutation(array, board, depth + 1);
+            }
+            swap(array[depth - 1], array[i]);
+        }
+    }
+}
+
+int solution(int n) {
+    num = 0;
+    board_size = n + 2;
+    vector<int> queen;
+    vector<int> board;
+
+    for (int i = 0; i < n; i++) {
+        queen.push_back(i);
+    }
+
+    for (int i = 0; i < board_size * board_size; i++) {
+        if (i / board_size == 0 || i % board_size == 0 ||
+            i % board_size == board_size - 1 ||
+            i / board_size == board_size - 1) {
+            board.push_back(-1);
+        }
+        else {
+            board.push_back(0);
+        }
+    }
+
+    permutation(queen, board,1);
+
+    return num;
+}
