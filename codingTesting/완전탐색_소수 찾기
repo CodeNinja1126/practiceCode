@@ -1,0 +1,66 @@
+/*
+프로그래머스 문제
+소수 찾기
+
+https://programmers.co.kr/learn/courses/30/lessons/42839
+*/
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <map>
+
+using namespace std;
+
+int numPrime;
+map<int,int> map_prime;
+
+bool isPrime(int num){
+    if(num == 1){
+        return false;
+    }
+    if(num == 2){
+        return true;
+    }
+    if(num % 2 == 0){
+        return false;
+    }
+    for(int i = 3; i <= sqrt(num); i += 1){ // i <= sqrt(num) 중요
+        if(num % i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+void permutation(string numbers, int depth){
+    int size = numbers.size();
+    string substr = numbers.substr(0,depth-1);
+    
+    if(substr.size() > 0){
+        int num = atoi(substr.c_str());
+        
+        if(isPrime(num)){
+            if(!map_prime[num]){
+                numPrime++;
+                map_prime[num]++;
+            }
+        }
+    }
+    if(depth <= size){
+        for(int i = depth - 1; i < size; i++){
+            swap(numbers[depth - 1],numbers[i]);
+            permutation(numbers,depth + 1);
+            swap(numbers[depth - 1],numbers[i]);
+        }
+    }
+
+}
+
+int solution(string numbers) {
+    numPrime = 0;
+    permutation(numbers, 1);
+    
+    return numPrime;
+}
