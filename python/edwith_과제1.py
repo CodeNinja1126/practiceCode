@@ -62,7 +62,7 @@ def scalar_matrix_product(alpha, matrix_variable):
 
 
 def is_product_availability_matrix(matrix_a, matrix_b):
-    result = vector_size_check(*matrix_a) and vector_size_check(matrix_b) and \
+    result = vector_size_check(*matrix_a) and vector_size_check(*matrix_b) and \
         len(matrix_a[0]) == len(matrix_b)
     return result
 
