@@ -6,55 +6,30 @@ https://www.acmicpc.net/problem/9205
 */
 #include<iostream>
 #include<vector>
+#include<cstring>
 
 using namespace std;
 
 vector<pair<int, int>> convenience;
+vector<int> node[102];
+int visited[102];
 
-int cal_dist(pair<int, int> depart, pair<int, int> dest) {
+bool reachable(pair<int, int> depart, pair<int, int> dest) {
 	return abs(depart.first - dest.first) +
-		abs(depart.second - dest.second);
+		abs(depart.second - dest.second) <= 1000;
 }
 
-bool isHappy(pair<int, int> home, pair<int, int> dest) {
-	vector<pair<pair<int, int>, vector<int>>> st;
-	vector<int> con_vec;
-
-	for(int i = 0; i < convenience.size(); i++)
-		con_vec.push_back(i);
-
-	st.push_back(make_pair(home, con_vec));
-
-	while (!st.empty()) {
-		vector<int> temp_vec = st.back().second;
-		pair<int, int> temp_pos = st.back().first;
-		st.pop_back();
-
-		/*
-		cout << temp_pos.first << ' ' << temp_pos.second << endl;
-		for (auto num : temp_vec) {
-			cout << num << ' ';
-		}
-		cout << endl;
-		*/
-
-		if (cal_dist(temp_pos, dest) <= 1000) {
-			return true;
-		}
-
-		if (temp_vec.empty()) {
-			continue;
-		}
-
-		for (int i = 0; i < temp_vec.size(); i++) {
-			if (cal_dist(temp_pos, convenience[temp_vec[i]]) <= 1000) {
-				vector<int> temp(temp_vec);
-				temp.erase(temp.begin() + i);
-				st.push_back(make_pair(convenience[temp_vec[i]], temp));
-			}
+bool isHappy(int index) {
+	for(auto temp: node[index]){
+		if(!visited[temp]){
+			if (temp == convenience.size() - 1)
+				return true;
+			visited[temp] = 1;
+			if (isHappy(temp))
+				return true;
 		}
 	}
-
+	
 	return false;
 }
 
@@ -66,18 +41,18 @@ int main() {
 		int convenience_n;
 		cin >> convenience_n;
 
-		pair<int, int> home, dest;
-		cin >> home.first >> home.second;
-
-		for (int i = 0; i < convenience_n; i++) {
+		for (int j = 0; j < convenience_n + 2; j++) {
 			int x_pos, y_pos;
 			cin >> x_pos >> y_pos;
 			convenience.push_back(make_pair(x_pos, y_pos));
 		}
 
-		cin >> dest.first >> dest.second;
+		for (int j = 0; j < convenience_n + 2; j++) 
+			for (int k = 0; k < convenience_n + 2; k++) 
+				if (j != k && reachable(convenience[j], convenience[k]))
+					node[j].push_back(k);
 
-		if (isHappy(home, dest)) {
+		if (isHappy(0)) {
 			cout << "happy" << endl;
 		}
 		else {
@@ -85,6 +60,10 @@ int main() {
 		}
 
 		convenience.clear();
+        for(int j = 0; j < convenience_n + 2; j++){
+            node[j].clear();
+        }
+        memset(visited, 0, sizeof(int)*102);
 	}
 
 	return 0;
