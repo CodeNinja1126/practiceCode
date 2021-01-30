@@ -3,7 +3,7 @@ import sys
 import os
 
 if __name__ == '__main__':
-    addr = input('md file name :')
+    addr = input('md file name : ')
 
     f = None
     if os.path.isfile(addr):
@@ -13,13 +13,13 @@ if __name__ == '__main__':
         sys.exit(0)
     # open target md file
 
-    image_addr = input('where is the images? :')
+    image_addr = input('where is the images? : ')
     # dir you want to change
     
     md_dir = os.path.abspath(addr).split(os.path.sep)
     md_dir = os.path.sep.join(md_dir[:-1]) + os.path.sep
 
-    f2 = input('new file name is? :')
+    f2 = input('new file name is? : ')
     f2 = open(md_dir+f2, mode='w', encoding='utf8')
     # open new md file
 
