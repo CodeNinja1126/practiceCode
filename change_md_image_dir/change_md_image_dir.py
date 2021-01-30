@@ -30,8 +30,8 @@ if __name__ == '__main__':
         # finding embeded image
         
         if url:
-            url = url[0]
-            url = url[2:-1]
+            url = re.findall(r'\([\x20-\x7E]+\)',content)[0]
+            url = url[1:-1]
             url = url.split(sep='/')
             content = '/'.join((image_addr, url[-1]))
             content = f'![{url[-1]}]({content})'
