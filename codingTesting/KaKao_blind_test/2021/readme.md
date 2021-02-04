@@ -43,3 +43,38 @@ st = 'fdczxdasd'
 sorted(st) # 이렇게 하면 문자열을 정렬 및 list로 쪼개준다.
 # ['a', 'c', 'd', 'd', 'd', 'f', 's', 'x', 'z']
 ```
+## 순위 검색
+효율성을 생각하지 않는다면 리스트로 자료를 저장한 다음 일반적인 선형탐색으로도 답을 찾을 수 있지만
+
+제한 시간 내에 통과하려면 트리 자료구조와 이진탐색을 사용해야 한다.
+
+다음과 같은 패턴으로 트리 구조를 만들 수 있다.
+```python3
+data_dict = {}
+
+lang_val = ['cpp', 'java', 'python', '-']
+job_val = ['backend','frontend', '-']
+level_val = ['junior', 'senior', '-']
+food_val = ['chicken', 'pizza', '-']
+
+for lang in lang_val:
+    data_dict[lang] = {}
+    for job in job_val:
+        data_dict[lang][job] = {}
+        for level in level_val:
+            data_dict[lang][job][level] = {}
+            for food in food_val:
+                data_dict[lang][job][level][food] = []
+```
+이진 탐색은 직접 구현할 필요 없이 다음과 같은 함수를 사용해 쉽게 구현한다.
+```python3
+from bisect import bisect_left()
+
+bisect_left([1,2,3,4,5], 2.5) # 정렬된 temp_list에 대해서 num값의 적절한 위치를 반환한다.
+# 2
+```
+이 때 `bisect_left`와 `bisect_right`의 가장 큰 차이는
+
+같은 값에 대해서 왼쪽에 위치할 것인지 오른쪽에 위치할 것인지에 차이이다.
+
+`bisect`는 `bisect_right`와 같다.
