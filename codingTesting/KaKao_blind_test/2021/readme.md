@@ -72,7 +72,7 @@ for lang in lang_val:
 ```python3
 from bisect import bisect_left()
 
-bisect_left([1,2,3,4,5], 2.5) # 정렬된 temp_list에 대해서 num값의 적절한 위치를 반환한다.
+bisect_left([1,2,3,4,5], 2.5) # 정렬된 리스트에 대해서 입력값의 적절한 위치를 반환한다.
 # 2
 ```
 이 때 `bisect_left`와 `bisect_right`의 가장 큰 차이는
