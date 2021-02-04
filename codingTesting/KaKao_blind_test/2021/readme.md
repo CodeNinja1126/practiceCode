@@ -66,6 +66,8 @@ for lang in lang_val:
             for food in food_val:
                 data_dict[lang][job][level][food] = []
 ```
+이렇게 해당 값을 참조하게 되는 모든 쿼리문에 대해 트리를 만든다.
+
 이진 탐색은 직접 구현할 필요 없이 다음과 같은 함수를 사용해 쉽게 구현한다.
 ```python3
 from bisect import bisect_left()
