@@ -10,9 +10,6 @@ def distance_table(s, dic_route):
     while len(q) > 0:
         temp_node = q.pop(0)
         
-        if temp_node[0] == s: 
-            continue
-        
         if temp_node[1] < visited[temp_node[0]]:
             visited[temp_node[0]] = temp_node[1]
         else:
