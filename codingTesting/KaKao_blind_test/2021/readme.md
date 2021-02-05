@@ -128,7 +128,7 @@ def short_distance(s, dic_route):
     # 이때 노드의 수보다 1 크게 리스트를 만든것은 
     # 노드의 인덱스가 1부터 시작하기 때문이다.
     visited[s] = 0
-    출발지 값은 0
+    # 출발지 값은 0
     q = [x for x in dic_route[s]]
     # 큐 생성 및 출발지에서의 경로들을 push
     
