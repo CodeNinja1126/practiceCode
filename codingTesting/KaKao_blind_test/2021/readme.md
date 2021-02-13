@@ -186,3 +186,126 @@ num = 7
 s = f'{num:02d}'
 # '07'
 ```
+
+## 카드 짝 맞추기
+
+처음으로 할 일은 조사할 모든 순서를 구하는 것이었다.
+
+카드는 최대 6가지 종류가 존재하므로 카드를 맞추는 순서는 최대 6!개이다.
+
+또한 각 카드는 두 장씩 존재하므로 조사해야 하는 순서는 최대 6! * 2^6개이다.
+
+이를 위해 `board` 위에 같은 값을 가진 카드를 하나는 그대로, 
+
+다른 하나는 음수값으로 치환해 두 카드를 구분할 수 있도록 하였다.
+
+다음 코드로 모든 순서를 구할 수 있었다.
+```python3
+ones_list = [1 for _ in range(card_n)] + [-1 for _ in range(card_n)]
+# n개의 1과 n개의 -1로 이루어진 리스트
+
+permu_list = list(permutations(card_set))
+# board 위에 존재하는 카드들의 수열들
+
+temp_list = []
+for ones in list(set(permutations(ones_list, r=card_n))):
+# 중복 가능한 1과 -1로 이루어진 길이 n의 수열들
+    for per in permu_list:
+        temp = []
+        for j in range(card_n):
+            temp.append(ones[j] * per[j])
+        # 카드들의 수열과 1과 -1의 수열을 요소곱한다. 
+        temp_list.append(temp)
+```
+예를 들어 `board` 위의 카드가 1, 2 두 가지가 존재한다면 나올 수 있는 순서는
+
+`[[1, 2], [-1, 2], [1, -2], [-1, -2], [2, 1], [-2, 1], [2, -1], [-2, -1]]`가 된다.
+
+다음은 현재 커서에서 목적지까지 이동하는데 걸리는 최소 이동 횟수이다.
+
+이는 bfs로 구현하면 되는데 효율성 통과를 위해서 같은 지점을 방문 시 이를 걸러줘야 한다.
+
+일단 board 크기의 visited 테이블을 생성하고 값을 0으로 초기화해준다.
+
+해당 지점에 도착했을 때 테이블의 해당 지점의 값이 0이라면 테이블에 1을 입력해준다.
+
+반면 테이블의 해당 지점이 1이라면 현재 경로는 파기하고 큐의 다음 경로를 탐색한다.
+
+bfs의 구현은 다음과 같다.
+```python3
+def count_key(board, r, c, i, j):
+    x1,x2,y1,y2 = r,i,c,j
+    visited = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    # visited table 생성
+    
+    q = []
+    q.append([0, x1, y1])
+    
+    while q:
+        temp = q.pop(0)
+        temp_x = temp[1]
+        temp_y = temp[2]
+        
+        if visited[temp_x][temp_y]:
+            continue
+        # visited값이 있을 경우 현재 경로를 탐색하지 않고 q의 다음 경로 탐색
+        
+        visited[temp_x][temp_y] = 1
+        # visited값이 없다면 1을 입력후 현재 경로 탐색
+        
+        if temp_x == x2 and temp_y == y2: 
+            return temp[0]
+        # 해당 지점에 도착하였다면 이동횟수 반환
+        
+        if temp_x < 3: 
+            temp_x += 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 오른쪽으로 한칸 이동
+            while temp_x < 3 and board[temp_x][temp_y] == 0:
+                temp_x += 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 오른쪽으로 컨트롤 이동
+            temp_x = temp[1]
+            # 이동값 초기화
+        if temp_y < 3: 
+            temp_y += 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 아래쪽으로 한칸 이동
+            while temp_y < 3 and board[temp_x][temp_y] == 0:
+                temp_y += 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 아래쪽으로 컨트롤 이동
+            temp_y = temp[2]
+            # 이동값 초기화
+        if temp_x > 0: 
+            temp_x -= 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 왼쪽으로 한칸 이동
+            while temp_x > 0 and board[temp_x][temp_y] == 0:
+                temp_x -= 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 왼쪽으로 컨트롤 이동
+            temp_x = temp[1]
+            # 이동값 초기화
+        if temp_y > 0: 
+            temp_y -= 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 위쪽으로 이동
+            while temp_y > 0 and board[temp_x][temp_y] == 0:
+                temp_y -= 1
+            q.append([temp[0] + 1, temp_x, temp_y])
+            # 위쪽으로 컨트롤 이동
+            temp_y = temp[2]
+            # 이동값 초기화
+```
+효율성 검사를 통과하기 위해선 한 가지 방법을 더 사용해야 한다.
+
+그것은 바로 각 순서를 검사하는 중에 카드 하나를 제거할 때마다 
+
+현재 이동 횟수를 현재까지의 최소 이동 횟수와 비교해서 값이 커질 경우
+
+해당 순서를 파기하고 바로 다음 순서를 탐색하는 것이다.
+
+이렇게 최소 이동 거리를 탐색할 때 한번, 순서를 탐색할 때 한번
+
+총 두번의 백트래킹을 해줘야 효율성 검사를 통과할 수 있다.
