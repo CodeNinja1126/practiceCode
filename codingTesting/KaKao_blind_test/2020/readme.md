@@ -52,6 +52,27 @@ for i in range(1, len(s)//2 + 1): # i는 자를 문자열의 길이
 ```
 
 # 괄호 변환
-이 문제의 경우에는 알고리즘을 문제에서 모두 설명하고 있으므로
+이 문제의 경우에는 알고리즘을 문제에서 모두 설명하고 있으므로 이를 문제대로 구현하기만 하면 된다.
 
-이를 문제대로 구현하기만 하면 된다.
+다만 재귀 구조를 구현해야 하므로 재귀를 구현할 수 있는가 없는가가 이 문제의 출제 의도라고 볼 수 있다.
+
+주요 함수의 구현 다음과 같다.
+```python3
+def make_correct(s):
+    if s == '':
+        return ''
+    
+    i = div_index(s)
+    u = s[:i]
+    v = s[i:]
+
+    if isCorrect(u):
+        v = make_correct(v)
+        return u + v
+    else:
+        ret = '(' + make_correct(v) + \
+            ')' + modify_u(u) 
+        return ret
+```
+
+
