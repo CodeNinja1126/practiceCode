@@ -23,7 +23,7 @@ def isCorrect(s):
     else: return True
 
     
-def div_to_uv(s):
+def div_index(s):
     for i in range(1,len(s),2):
         print(s[:i+1])
         if isBalanced(s[:i+1]):
@@ -40,7 +40,7 @@ def make_correct(s):
     if s == '':
         return ''
     
-    i = div_to_uv(s)
+    i = div_index(s)
     u = s[:i]
     v = s[i:]
 
