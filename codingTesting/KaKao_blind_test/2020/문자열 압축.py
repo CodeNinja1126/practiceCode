@@ -6,7 +6,7 @@ def solution(s):
     if len(s) == 1:
         return 1
     
-    for i in range(1, len(s)):
+    for i in range(1, len(s)//2 + 1):
         pre_str = ['', 0]
         temp_str = '';
         
